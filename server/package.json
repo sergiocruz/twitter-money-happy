@@ -25,7 +25,8 @@
     "sails-mongo": "^0.12.0"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon -w api -w config",
+    "start-prod": "node app.js",
     "debug": "node debug app.js"
   },
   "main": "app.js",
@@ -34,5 +35,8 @@
     "url": "git://github.com/sergiocruz/server.git"
   },
   "author": "sergiocruz",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "nodemon": "^1.9.1"
+  }
 }

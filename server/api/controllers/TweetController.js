@@ -6,6 +6,13 @@
  */
 
 module.exports = {
-	
-};
 
+	import: function(req, res) {
+
+		res.json({
+			test: "true"
+		})
+
+	}
+
+};
