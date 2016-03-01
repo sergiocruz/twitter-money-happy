@@ -22,7 +22,10 @@
     "rc": "~0.5.0",
     "sails": "~0.10.5",
     "sails-disk": "~0.10.0",
-    "sails-mongo": "^0.12.0"
+    "sails-mongo": "^0.12.0",
+    "sentiment": "^1.0.6",
+    "twitter": "^1.2.5",
+    "yahoo-finance": "^0.2.12"
   },
   "scripts": {
     "start": "nodemon -w api -w config",
