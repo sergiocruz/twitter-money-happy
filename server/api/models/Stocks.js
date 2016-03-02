@@ -11,12 +11,12 @@ module.exports = {
     month: {
         type: 'string',
         defaultsTo: '0000-00'
-    }
+    },
     symbol: {
         type: 'string',
         defaultsTo: 'null',
         unique: true
-    }
+    },
     price: {
         type: 'integer',
         defaultsTo: 0
