@@ -37,6 +37,7 @@ module.exports.routes = {
   },
 
   '/tweets/import': 'TweetController.import',
+  '/tweets/stream': 'TweetController.stream'
 
   /***************************************************************************
   *                                                                          *

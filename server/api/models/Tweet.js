@@ -12,15 +12,15 @@ module.exports = {
             type: 'string',
             defaultsTo: 'null',
             unique: true
-        }
+        },
         month: {
             type: 'string',
             defaultsTo: 'YYYY-MM'
-        }
+        },
         sentiment: {
             type: 'integer',
             defaultsTo: 0
-        }
+        },
         tweets: {
             type: 'array'
         }
