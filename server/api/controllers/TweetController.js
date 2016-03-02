@@ -29,6 +29,18 @@ module.exports = {
                 console.log(error);
             });
         });
+	},
+	
+	stream: function(req, res) {
+		client.stream('statuses/filter', {track: '$GOOG'},  function(stream){
+            stream.on('data', function(tweet) {
+                sails.sockets.blast('$GOOG', tweet);
+            });
+
+            stream.on('error', function(error) {
+                console.log(error);
+            });
+        });
 	}
 
 };
