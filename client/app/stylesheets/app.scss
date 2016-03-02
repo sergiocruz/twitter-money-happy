@@ -3,6 +3,8 @@
 $icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
 $fa-font-path: "/node_modules/fontawesome/fonts";
 
+$font-size-base: 18px;
+
 @import '../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import 'template';
 
@@ -13,4 +15,8 @@ $fa-font-path: "/node_modules/fontawesome/fonts";
     font-size: 20px;
     line-height: 40px;
   }
+}
+
+.to-upper {
+  text-transform: uppercase;
 }

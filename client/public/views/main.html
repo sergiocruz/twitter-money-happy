@@ -9,13 +9,13 @@
 
 <hr> -->
 
-<div ng-show="vm.loading">
+<h3 ng-show="vm.loading">
   Loading data...
-</div>
+</h3>
 
 <div ng-show="!vm.loading">
 
-  <h1>How people feel about DiCaprio</h1>
+  <h1>How people feel about <strong>DiCaprio</strong></h1>
 
   <div class="progress">
     <div class="progress-bar" style="min-width: 5%; width: {{ vm.factor }}%; background-color: {{ vm.color.hexString() }}">
@@ -23,8 +23,12 @@
     </div>
   </div>
 
-  <h3 ng-bind="vm.feeling"></h3>
+  <h3 class="to-upper" style="color: {{ vm.color.hexString() }}">
+    <strong ng-bind="vm.feeling"></strong>
+  </h3>
 
-  <p>Tweets analyzed: {{ vm.tweetsAnalyzed }}</p>
+  <h4 class="to-upper">
+    Tweets analyzed: {{ vm.tweetsAnalyzed }}
+  </h4>
 
 </div>
