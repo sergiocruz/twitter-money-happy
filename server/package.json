@@ -12,7 +12,9 @@
   "dependencies": {
     "express": "^4.13.4",
     "mongoose": "^4.4.5",
+    "node-tweet-stream": "^1.10.0",
     "nodemon": "^1.9.1",
-    "socket.io": "^1.4.5"
+    "socket.io": "^1.4.5",
+    "twitter": "^1.2.5"
   }
 }
