@@ -22,7 +22,10 @@
     "babel-core": "^6.6.0",
     "babel-register": "^6.6.0",
     "bootstrap-sass": "^3.3.6",
+    "color": "^0.11.1",
+    "color-manipulate": "^1.0.1",
     "gulp": "^3.9.1",
+    "node-raphael-args": "^0.2.9",
     "socket.io-client": "^1.4.5"
   },
   "dependencies": {
