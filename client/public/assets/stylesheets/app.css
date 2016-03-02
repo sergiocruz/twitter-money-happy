@@ -7739,14 +7739,14 @@ button.close {
   }
 }
 
-h1, h2, h3, h4, h5 {
-  font-weight: 100;
-}
-
 /* Space out content a bit */
 body {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 100;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -7825,4 +7825,16 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+.color {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #333333;
+}
+
+.label-xl {
+  font-size: 18px;
 }

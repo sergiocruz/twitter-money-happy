@@ -1,7 +1,7 @@
-var angular = require('angular')
-var socket = require('socket.io-client')('http://localhost:4000');
+const angular = require('angular')
+const socket = require('socket.io-client')('http://localhost:4000');
 
-socket.on('connect', function(){
+socket.on('connect', function() {
   console.log('connected')
 });
 
