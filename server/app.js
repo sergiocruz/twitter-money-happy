@@ -1,3 +1,4 @@
+// Dependencies
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -5,94 +6,70 @@ var io = require('socket.io')(server);
 var port = process.env.PORT || 4000;
 var twcfg = require('./twitter-keys');
 var cors = require('cors')
-//var tw = require('node-tweet-stream')(twcfg);
-var twitter = require('twitter'),
-    client = new twitter(twcfg);;
+var twitter = require('twitter');
+var client = new twitter(twcfg);
 var sentiment = require('sentiment');
-
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://162.243.193.22/twitter-money-happy');
-
-app.use(cors());
-
-
 var Tweet = require('./model/Tweet');
 
+// Connect to mongo
+mongoose.connect('mongodb://162.243.193.22/twitter-money-happy');
+
+// Use CORS
+app.use(cors());
+
+// DiCaprio Record to update
 var dicaprio = null;
 Tweet.findById('56d65327481026594e000ac9', function(err, doc) {
-    dicaprio = doc;
+  dicaprio = doc;
 });
 
-// var dicaprio = new Tweet({
-//     avg: 0,
-//     name: 'DiCaprio'
-// });
-
-// dicaprio.save(function(err) {
-
-//     if (err) {
-//         console.log('error saving');
-//         return;
-//     }
-
-//     console.log('saved')
-// })
-
-//return;
-
-
-
-
-
-
-server.listen(port, function () {
+// Listen to server
+server.listen(port, function() {
   console.log('Server listening at port %d', port);
 });
 
+// Home route (for test purposes)
 app.get('/', function(req, res) {
   res.send('hello world')
 });
 
+// Get average
 app.get('/avg', function(req, res) {
-    res.json({ avg: dicaprio.avg });
+  res.json({
+    avg: dicaprio.avg
+  });
 })
 
 // Routing
 app.use(express.static(__dirname + '/public'));
 
-client.stream('statuses/filter', {track: 'DiCaprio', language: 'en'}, function(stream) {
-    stream.on('data', function(tweet) {
-        //if (tweet.text.indexOf('RT') != 0) {
-            var senti = sentiment(tweet.text);
+// Streaming API
+client.stream('statuses/filter', {
+  track: 'DiCaprio', // search term
+  language: 'en' // language
+}, function onStream(stream) {
 
-            if (senti.score != 0) {
-                dicaprio.avg = (dicaprio.avg + senti.score) / 2;
-                dicaprio.save();
+  stream.on('data', function(tweet) {
 
-                console.log("A: " + parseInt(dicaprio.avg) + " -- S: " + senti.score + " -- " + tweet.text);
-                io.emit('tweet', dicaprio.avg);
-            }
-        //}
-    });
+    // Sentiment
+    var senti = sentiment(tweet.text);
 
-    stream.on('error', function(error) {
-        console.log(error);
-    });
+    if (senti.score != 0) {
+
+      // DiCaprio Score
+      dicaprio.avg = (dicaprio.avg + senti.score) / 2;
+      dicaprio.save();
+
+      // Log
+      console.log("A: " + parseInt(dicaprio.avg) + " -- S: " + senti.score + " -- " + tweet.text);
+
+      // Send data to frontend
+      io.emit('tweet', dicaprio.avg);
+    }
+  });
+
+  stream.on('error', function(error) {
+    console.log(error);
+  });
 });
-//}
-
-// for (var i in trackables)
-//     tw.track(trackables[i]);
-
-// tw.on('tweet', function(tweet) {
-//     console.log(tweet);
-
-//     var text = tweet.text;
-
-
-//     io.emit('tweet', tweet);
-// });
-
-/*io.on('connection', function (socket) {
-
-});*/
