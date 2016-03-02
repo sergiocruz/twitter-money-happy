@@ -17,5 +17,8 @@
     "sentiment": "^1.0.6",
     "socket.io": "^1.4.5",
     "twitter": "^1.2.5"
+  },
+  "devDependencies": {
+    "cors": "^2.7.1"
   }
 }

@@ -1,4 +1,4 @@
-<form ng-submit="vm.mix()" class="form-inline">
+<!-- <form ng-submit="vm.mix()" class="form-inline">
 
   <div class="form-group">
     <input type="text" class="form-control" ng-model="vm.factor">
@@ -7,15 +7,24 @@
 
 </form>
 
-<hr>
+<hr> -->
 
-
-
-<h1>How people feel about DiCaprio</h1>
-
-<div class="progress">
-  <div class="progress-bar" style="min-width: 5%; width: {{ vm.factor }}%; background-color: {{ vm.color.hexString() }}">
-    {{ vm.factor }}%
-  </div>
+<div ng-show="vm.loading">
+  Loading data...
 </div>
-<h3 ng-bind="vm.feeling"></h3>
+
+<div ng-show="!vm.loading">
+
+  <h1>How people feel about DiCaprio</h1>
+
+  <div class="progress">
+    <div class="progress-bar" style="min-width: 5%; width: {{ vm.factor }}%; background-color: {{ vm.color.hexString() }}">
+      {{ vm.factor }}%
+    </div>
+  </div>
+
+  <h3 ng-bind="vm.feeling"></h3>
+
+  <p>Tweets analyzed: {{ vm.tweetsAnalyzed }}</p>
+
+</div>

@@ -4,6 +4,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 4000;
 var twcfg = require('./twitter-keys');
+var cors = require('cors')
 //var tw = require('node-tweet-stream')(twcfg);
 var twitter = require('twitter'),
     client = new twitter(twcfg);;
@@ -11,6 +12,8 @@ var sentiment = require('sentiment');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://162.243.193.22/twitter-money-happy');
+
+app.use(cors());
 
 
 var Tweet = require('./model/Tweet');
@@ -61,7 +64,7 @@ client.stream('statuses/filter', {track: 'DiCaprio', language: 'en'}, function(s
     stream.on('data', function(tweet) {
         //if (tweet.text.indexOf('RT') != 0) {
             var senti = sentiment(tweet.text);
-            
+
             if (senti.score != 0) {
                 dicaprio.avg = (dicaprio.avg + senti.score) / 2;
                 dicaprio.save();
@@ -91,5 +94,5 @@ client.stream('statuses/filter', {track: 'DiCaprio', language: 'en'}, function(s
 // });
 
 /*io.on('connection', function (socket) {
-    
+
 });*/

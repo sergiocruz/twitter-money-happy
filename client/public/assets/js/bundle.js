@@ -2,15 +2,10 @@
 'use strict';
 
 var angular = require('angular');
-var socket = require('socket.io-client')('http://localhost:4000');
-
-socket.on('connect', function () {
-  console.log('connected');
-});
 
 angular.module('app', [require('angular-ui-router')]).config(require('./config/routes')).controller('MainController', require('./controllers/main-ctrl'));
 
-},{"./config/routes":2,"./controllers/main-ctrl":3,"angular":6,"angular-ui-router":4,"socket.io-client":28}],2:[function(require,module,exports){
+},{"./config/routes":2,"./controllers/main-ctrl":3,"angular":6,"angular-ui-router":4}],2:[function(require,module,exports){
 'use strict';
 
 module.exports = ['$stateProvider', '$urlRouterProvider', function setupRoutes($stateProvider, $urlRouterProvider) {
@@ -29,16 +24,20 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function setupRoutes($
 },{}],3:[function(require,module,exports){
 'use strict';
 
+var socket = require('socket.io-client')('http://localhost:4000');
+
 var ColorManipulate = require('color-manipulate');
 var Color = require('color');
 
-module.exports = ['$scope', '$timeout', MainCtrl];
+module.exports = ['$scope', '$timeout', '$http', MainCtrl];
 
-function MainCtrl($scope, $timeout) {
+function MainCtrl($scope, $timeout, $http) {
   var vm = this;
   vm.mix = mix;
   vm.factor = 50;
   vm.color = null;
+  vm.tweetsAnalyzed = 0;
+  vm.loading = true;
 
   var red = Color("#cb3837");
   var green = Color("#8BCB37");
@@ -47,9 +46,25 @@ function MainCtrl($scope, $timeout) {
 
   ///////////////
 
+  /**
+   * Default actions...
+   * @return {Void}
+   */
   function activate() {
     console.log('activated');
-    mix();
+    $scope.$watch('vm.factor', mix);
+
+    $timeout(function () {
+
+      $http.get('http://localhost:4000/avg').then(function (res) {
+
+        console.log('done loading!');
+        updateFactor(res.data.avg);
+        vm.loading = false;
+      });
+    }, 2000);
+
+    // mix();
   }
 
   /**
@@ -81,22 +96,56 @@ function MainCtrl($scope, $timeout) {
   function calculateFeeling() {
 
     if (vm.factor < 20) {
-      vm.feeling = 'I hate it';
+      vm.feeling = 'We hate him';
     } else if (vm.factor < 40) {
-      vm.feeling = 'I don\'t like it';
+      vm.feeling = 'We don\'t like him';
     } else if (vm.factor < 60) {
-      vm.feeling = 'It\'s ok';
+      vm.feeling = 'He\'s ok';
     } else if (vm.factor < 80) {
-      vm.feeling = 'I like it';
+      vm.feeling = 'We like him';
     } else {
-      vm.feeling = 'I love it';
+      vm.feeling = 'We love him';
     }
   }
 
-  $scope.$watch('vm.factor', mix);
+  /**
+   * Start listening
+   * @return {Void}
+   */
+  socket.on('connect', function () {
+    console.log('connected');
+
+    socket.on('tweet', function (avg) {
+
+      console.log('avg', avg);
+      $timeout(updateFactor.bind(null, avg));
+      // updateFactor(avg);
+    });
+  });
+
+  /**
+   * Updates factor
+   * @param  {number} avg
+   * @return {Void}
+   */
+  function updateFactor(avg) {
+
+    var number = (avg + 5) * 10;
+
+    if (number > 100) {
+      vm.factor = 100;
+      return;
+    } else if (number < 0) {
+      vm.factor = 0;
+      return;
+    }
+
+    vm.factor = number;
+    vm.tweetsAnalyzed++;
+  }
 }
 
-},{"color":23,"color-manipulate":14}],4:[function(require,module,exports){
+},{"color":23,"color-manipulate":14,"socket.io-client":28}],4:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.18

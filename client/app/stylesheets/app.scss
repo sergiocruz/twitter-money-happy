@@ -6,14 +6,11 @@ $fa-font-path: "/node_modules/fontawesome/fonts";
 @import '../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import 'template';
 
-.color {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid #333333;
-}
+.progress {
+  height: 40px;
 
-.label-xl {
-  font-size: 18px;
+  .progress-bar {
+    font-size: 20px;
+    line-height: 40px;
+  }
 }
